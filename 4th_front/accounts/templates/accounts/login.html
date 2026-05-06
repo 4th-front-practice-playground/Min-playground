@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LG Login</title>
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="header">
+            <a class="header-button" href="/">Home</a>
+            <nav class="header-actions" aria-label="사용자 메뉴">
+                <a class="header-button" href="/accounts/login/">로그인</a>
+                <button class="header-button" type="button" onclick="goToMyPage()">마이페이지</button>
+            </nav>
+        </header>
+
+        <main class="login-layout">
+            <section class="login-panel" aria-labelledby="login-title">
+                <p class="login-eyebrow">로고</p>
+                <h1 id="login-title">로그인</h1>
+                <form class="login-form" onsubmit="handleLogin(event)">
+                    <label for="loginId">아이디</label>
+                    <input id="loginId" type="text" placeholder="아이디를 입력하세요.">
+
+                    <label for="loginPassword">비밀번호</label>
+                    <input id="loginPassword" type="password" placeholder="비밀번호를 입력하세요.">
+
+                    <label class="remember-row">
+                        <input type="checkbox">
+                        <span>로그인 상태 유지</span>
+                    </label>
+
+                    <button class="primary-button" type="submit">로그인</button>
+                </form>
+
+                <div class="account-links" aria-label="계정 찾기">
+                    <a href="#">아이디 찾기</a>
+                    <span>|</span>
+                    <a href="#">비밀번호 찾기</a>
+                </div>
+
+                <p class="signup-row">
+                    계정이 없으신가요?
+                    <a href="#">회원가입</a>
+                </p>
+            </section>
+
+            <aside class="interior-placeholder" aria-label="제품 인테리어 이미지 placeholder">
+                <p>제품 인테리어 이미지<br>하나 아무거나</p>
+            </aside>
+        </main>
+    </div>
+
+    <script src="{% static 'accounts/accounts.js' %}"></script>
+</body>
+</html>

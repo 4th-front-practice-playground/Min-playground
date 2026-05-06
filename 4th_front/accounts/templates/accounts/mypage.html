@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LG My Page</title>
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body data-page="mypage">
+    <div class="page-shell mypage-shell">
+        <header class="header">
+            <a class="header-button" href="/">Home</a>
+            <nav class="header-actions" aria-label="사용자 메뉴">
+                <a class="header-button" href="/accounts/login/">로그인</a>
+                <button class="header-button" type="button" onclick="goToMyPage()">마이페이지</button>
+            </nav>
+        </header>
+
+        <main class="mypage-layout">
+            <aside class="mypage-sidebar" aria-label="마이페이지 메뉴">
+                <h1>마이페이지</h1>
+                <button class="mypage-nav-button is-active" type="button" data-section="profile">내 정보</button>
+                <button class="mypage-nav-button" type="button" data-section="history">검색 기록</button>
+                <button class="mypage-nav-button" type="button" data-section="wishlist">찜한 제품</button>
+                <button class="mypage-nav-button" type="button" data-section="qna">문의 내역</button>
+                <button class="mypage-nav-button" type="button" data-section="settings">설정</button>
+            </aside>
+
+            <section class="mypage-content" id="mypageContent" aria-live="polite"></section>
+        </main>
+    </div>
+
+    <script src="{% static 'accounts/accounts.js' %}"></script>
+</body>
+</html>
