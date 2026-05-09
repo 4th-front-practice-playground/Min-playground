@@ -1,95 +1,105 @@
+import { useState } from "react";
 import Header from "../components/Header";
+import ChatSidebar from "../components/chat/ChatSidebar";
+import ChatHeader from "../components/chat/ChatHeader";
+import RecommendedQuestions from "../components/chat/RecommendedQuestions";
+import ChatMessages from "../components/chat/ChatMessages";
+import ChatInput from "../components/chat/ChatInput";
+
+export type ChatMessage = {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+};
 
 function ChatPage() {
-  const recentChats = ["TV 추천 상담", "냉장고 비교", "에어컨 문의"];
+  // 전체 채팅 메시지 상태 저장
+  // 나중에 AI 응답까지 여기 배열에 추가됨
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  const recommendedQuestions = [
-    "혼자 사는데 어떤 냉장고가 좋아?",
-    "20평대 에어컨 추천해줘",
-    "TV랑 사운드바 같이 추천해줘",
-    "예산 100만원 이하 세탁기 추천해줘",
-  ];
+  // 사용자가 메시지 전송했을 때 실행
+  const handleSendMessage = async (content: string) => {
+    // 사용자 메시지 객체 생성
+    const userMessage: ChatMessage = {
+      id: Date.now(),
+      role: "user",
+      content,
+    };
+
+    // 기존 메시지 + 사용자 메시지 추가
+    setMessages((prev) => [...prev, userMessage]);
+
+    /*
+      ==============================
+      여기서 AI API 연동 시작
+      ==============================
+
+      예시 흐름:
+
+      1. Django backend로 사용자 질문 전달
+         POST /api/chat/
+
+      2. backend에서 AI(OpenAI 등) 호출
+
+      3. AI 응답 받아오기
+
+      4. assistant 메시지 추가
+
+      예시:
+
+      const response = await fetch("http://localhost:8000/api/chat/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: content,
+        }),
+      });
+
+      const data = await response.json();
+
+      const assistantMessage: ChatMessage = {
+        id: Date.now() + 1,
+        role: "assistant",
+        content: data.answer,
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+
+    */
+  };
+
+  // 새 대화 버튼 클릭 시 채팅 초기화
+  const handleNewChat = () => {
+    setMessages([]);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
       <main className="mx-auto grid h-[calc(100vh-56px)] max-w-6xl grid-cols-[260px_1fr] gap-6 p-6">
-        {/* 왼쪽 사이드바 */}
-        <aside className="rounded-2xl border bg-white p-5 shadow-sm">
-          <button
-            type="button"
-            className="mb-6 w-full rounded-lg bg-red-600 py-3 font-semibold text-white hover:bg-red-700"
-          >
-            새 대화
-          </button>
+        {/* 왼쪽 채팅 사이드바 */}
+        <ChatSidebar onNewChat={handleNewChat} />
 
-          <section>
-            <h2 className="mb-3 text-sm font-bold text-gray-500">최근 대화</h2>
-
-            <div className="space-y-2">
-              {recentChats.map((chat) => (
-                <button
-                  key={chat}
-                  type="button"
-                  className="w-full rounded-lg border px-4 py-3 text-left text-sm hover:bg-gray-50"
-                >
-                  {chat}
-                </button>
-              ))}
-            </div>
-          </section>
-        </aside>
-
-        {/* 오른쪽 채팅 영역 */}
+        {/* 오른쪽 채팅 메인 영역 */}
         <section className="flex min-h-0 flex-col rounded-2xl border bg-white shadow-sm">
-          <div className="border-b p-5">
-            <h1 className="text-2xl font-bold">LG 챗봇</h1>
-            <p className="mt-1 text-sm text-gray-500">
-              원하는 가전 조건을 입력하면 AI가 상품을 추천해줍니다.
-            </p>
-          </div>
+          {/* 채팅 상단 제목 */}
+          <ChatHeader />
 
-          {/* 첫 화면 추천 질문 영역 */}
-          <div className="flex flex-1 items-center justify-center p-6">
-            <div className="w-full max-w-2xl text-center">
-              <h2 className="mb-2 text-2xl font-bold">
-                무엇을 도와드릴까요?
-              </h2>
+          {/* 
+            메시지가 없으면 추천 질문 화면 출력
+            메시지가 있으면 실제 채팅 출력
+          */}
+          {messages.length === 0 ? (
+            <RecommendedQuestions onSelectQuestion={handleSendMessage} />
+          ) : (
+            <ChatMessages messages={messages} />
+          )}
 
-              <p className="mb-6 text-gray-500">
-                원하는 가전 조건을 선택하거나 직접 입력해보세요.
-              </p>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                {recommendedQuestions.map((question) => (
-                  <button
-                    key={question}
-                    type="button"
-                    className="rounded-xl border bg-white p-4 text-left text-sm hover:bg-gray-50"
-                  >
-                    {question}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* 입력창 */}
-          <form className="flex gap-3 border-t p-5">
-            <input
-              type="text"
-              placeholder="메시지를 입력하세요."
-              className="flex-1 rounded-xl border px-4 py-3 outline-none focus:border-red-500"
-            />
-
-            <button
-              type="button"
-              className="rounded-xl bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700"
-            >
-              전송
-            </button>
-          </form>
+          {/* 하단 입력창 */}
+          <ChatInput onSendMessage={handleSendMessage} />
         </section>
       </main>
     </div>
