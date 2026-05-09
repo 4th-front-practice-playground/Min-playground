@@ -1,11 +1,21 @@
 import Header from "../components/Header";
 
 function ChatPage() {
+  const recentChats = ["TV 추천 상담", "냉장고 비교", "에어컨 문의"];
+
+  const recommendedQuestions = [
+    "혼자 사는데 어떤 냉장고가 좋아?",
+    "20평대 에어컨 추천해줘",
+    "TV랑 사운드바 같이 추천해줘",
+    "예산 100만원 이하 세탁기 추천해줘",
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
       <main className="mx-auto grid h-[calc(100vh-56px)] max-w-6xl grid-cols-[260px_1fr] gap-6 p-6">
+        {/* 왼쪽 사이드바 */}
         <aside className="rounded-2xl border bg-white p-5 shadow-sm">
           <button
             type="button"
@@ -14,36 +24,24 @@ function ChatPage() {
             새 대화
           </button>
 
-          <section className="mb-8">
+          <section>
             <h2 className="mb-3 text-sm font-bold text-gray-500">최근 대화</h2>
 
             <div className="space-y-2">
-              <button className="w-full rounded-lg border px-4 py-3 text-left text-sm hover:bg-gray-50">
-                TV 추천 상담
-              </button>
-              <button className="w-full rounded-lg border px-4 py-3 text-left text-sm hover:bg-gray-50">
-                냉장고 비교
-              </button>
-              <button className="w-full rounded-lg border px-4 py-3 text-left text-sm hover:bg-gray-50">
-                에어컨 문의
-              </button>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="mb-3 text-sm font-bold text-gray-500">추천 질문</h2>
-
-            <div className="space-y-2">
-              <button className="w-full rounded-lg bg-gray-100 px-4 py-3 text-left text-sm hover:bg-gray-200">
-                혼자 사는데 어떤 냉장고가 좋아?
-              </button>
-              <button className="w-full rounded-lg bg-gray-100 px-4 py-3 text-left text-sm hover:bg-gray-200">
-                20평대 에어컨 추천해줘
-              </button>
+              {recentChats.map((chat) => (
+                <button
+                  key={chat}
+                  type="button"
+                  className="w-full rounded-lg border px-4 py-3 text-left text-sm hover:bg-gray-50"
+                >
+                  {chat}
+                </button>
+              ))}
             </div>
           </section>
         </aside>
 
+        {/* 오른쪽 채팅 영역 */}
         <section className="flex min-h-0 flex-col rounded-2xl border bg-white shadow-sm">
           <div className="border-b p-5">
             <h1 className="text-2xl font-bold">LG 챗봇</h1>
@@ -52,21 +50,32 @@ function ChatPage() {
             </p>
           </div>
 
-          <div className="flex-1 space-y-4 overflow-y-auto p-6">
-            <div className="max-w-[70%] rounded-2xl bg-gray-100 px-5 py-4">
-              안녕하세요! 어떤 가전을 찾고 계신가요?
-            </div>
+          {/* 첫 화면 추천 질문 영역 */}
+          <div className="flex flex-1 items-center justify-center p-6">
+            <div className="w-full max-w-2xl text-center">
+              <h2 className="mb-2 text-2xl font-bold">
+                무엇을 도와드릴까요?
+              </h2>
 
-            <div className="ml-auto max-w-[70%] rounded-2xl bg-red-600 px-5 py-4 text-white">
-              1인 가구용 냉장고 추천해줘
-            </div>
+              <p className="mb-6 text-gray-500">
+                원하는 가전 조건을 선택하거나 직접 입력해보세요.
+              </p>
 
-            <div className="max-w-[70%] rounded-2xl bg-gray-100 px-5 py-4">
-              좋습니다. 용량, 예산, 설치 공간을 알려주시면 더 정확하게
-              추천해드릴 수 있어요.
+              <div className="grid gap-3 sm:grid-cols-2">
+                {recommendedQuestions.map((question) => (
+                  <button
+                    key={question}
+                    type="button"
+                    className="rounded-xl border bg-white p-4 text-left text-sm hover:bg-gray-50"
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
+          {/* 입력창 */}
           <form className="flex gap-3 border-t p-5">
             <input
               type="text"
