@@ -1,8 +1,10 @@
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
+import CategoryCard from "../components/CategoryCard";
 
 function MainPage() {
   const navigate = useNavigate();
+  const categories = ["TV", "냉장고", "에어컨", "청소기", "세탁기"];
 
   return (
     <div className="min-h-screen bg-white">
@@ -38,30 +40,16 @@ function MainPage() {
 
         {/* 카테고리 영역 */}
         <section>
-          <h2 className="mb-6 text-2xl font-bold">
-            카테고리
-          </h2>
+          <h2 className="mb-6 text-2xl font-bold">카테고리</h2>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            <div className="rounded-xl bg-gray-100 p-6 text-center">
-              TV
-            </div>
-
-            <div className="rounded-xl bg-gray-100 p-6 text-center">
-              냉장고
-            </div>
-
-            <div className="rounded-xl bg-gray-100 p-6 text-center">
-              에어컨
-            </div>
-
-            <div className="rounded-xl bg-gray-100 p-6 text-center">
-              청소기
-            </div>
-
-            <div className="rounded-xl bg-gray-100 p-6 text-center">
-              세탁기
-            </div>
+            {categories.map((category) => (
+              <CategoryCard
+                key={category}
+                name={category}
+                onClick={() => navigate(`/search?category=${category}`)}
+              />
+            ))}
           </div>
         </section>
       </main>
