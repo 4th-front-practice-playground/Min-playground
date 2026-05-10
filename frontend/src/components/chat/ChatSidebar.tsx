@@ -6,7 +6,7 @@ function ChatSidebar({ onNewChat }: ChatSidebarProps) {
     const recentChats = ["TV 추천 상담", "냉장고 비교", "에어컨 문의"];
 
     return (
-        <aside className="rounded-2xl border bg-white p-5 shadow-sm">
+        <aside className="flex h-full flex-col rounded-2xl border bg-white p-5 shadow-sm">
             <button
                 type="button"
                 onClick={onNewChat}
@@ -18,7 +18,7 @@ function ChatSidebar({ onNewChat }: ChatSidebarProps) {
             <section>
                 <h2 className="mb-3 text-sm font-bold text-gray-500">최근 대화</h2>
 
-                <div className="space-y-2">
+                <div className="space-y-2 overflow-y-auto">
                     {recentChats.map((chat) => (
                         <button
                             key={chat}
