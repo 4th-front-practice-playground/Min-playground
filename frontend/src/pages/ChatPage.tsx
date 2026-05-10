@@ -13,92 +13,95 @@ export type ChatMessage = {
 };
 
 function ChatPage() {
-  // 전체 채팅 메시지 상태 저장
-  // 나중에 AI 응답까지 여기 배열에 추가됨
+  // 전체 채팅 메시지 상태
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  // 사용자가 메시지 전송했을 때 실행
+  // 모바일 사이드바 열림 상태
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // 메시지 전송
   const handleSendMessage = async (content: string) => {
-    // 사용자 메시지 객체 생성
     const userMessage: ChatMessage = {
       id: Date.now(),
       role: "user",
       content,
     };
 
-    // 기존 메시지 + 사용자 메시지 추가
     setMessages((prev) => [...prev, userMessage]);
 
     /*
       ==============================
-      여기서 AI API 연동 시작
+      나중에 여기서 AI API 호출
       ==============================
 
-      예시 흐름:
+      const response = await fetch(...)
 
-      1. Django backend로 사용자 질문 전달
-         POST /api/chat/
-
-      2. backend에서 AI(OpenAI 등) 호출
-
-      3. AI 응답 받아오기
-
-      4. assistant 메시지 추가
-
-      예시:
-
-      const response = await fetch("http://localhost:8000/api/chat/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: content,
-        }),
-      });
-
-      const data = await response.json();
-
-      const assistantMessage: ChatMessage = {
-        id: Date.now() + 1,
-        role: "assistant",
-        content: data.answer,
-      };
+      const assistantMessage = {
+        ...
+      }
 
       setMessages((prev) => [...prev, assistantMessage]);
-
     */
   };
 
-  // 새 대화 버튼 클릭 시 채팅 초기화
+  // 새 대화
   const handleNewChat = () => {
     setMessages([]);
+
+    // 모바일에서 새 대화 누르면 사이드바 닫기
+    setIsSidebarOpen(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="mx-auto grid h-[calc(100vh-56px)] max-w-6xl grid-cols-[260px_1fr] gap-6 p-6">
-        {/* 왼쪽 채팅 사이드바 */}
-        <ChatSidebar onNewChat={handleNewChat} />
+      {/* 모바일 사이드바 오버레이 */}
+      {isSidebarOpen && (
+        <div className="fixed inset-0 z-50 bg-black/40 md:hidden">
+          <div className="h-full w-72 bg-white p-4 shadow-xl">
+            <div className="mb-4 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setIsSidebarOpen(false)}
+                className="rounded-lg border px-3 py-2 text-sm hover:bg-gray-50"
+              >
+                X
+              </button>
+            </div>
 
-        {/* 오른쪽 채팅 메인 영역 */}
-        <section className="flex min-h-0 flex-col rounded-2xl border bg-white shadow-sm">
-          {/* 채팅 상단 제목 */}
+            <ChatSidebar onNewChat={handleNewChat} />
+          </div>
+        </div>
+      )}
+
+      <main className="mx-auto h-[calc(100vh-56px)] max-w-6xl p-4 md:grid md:grid-cols-[260px_1fr] md:gap-6 md:p-6">
+        {/* 데스크톱 사이드바 */}
+        <div className="hidden md:block">
+          <ChatSidebar onNewChat={handleNewChat} />
+        </div>
+
+        {/* 오른쪽 채팅 영역 */}
+        <section className="relative flex h-full min-h-0 flex-col rounded-2xl border bg-white shadow-sm">
+          <button
+            type="button"
+            onClick={() => setIsSidebarOpen(true)}
+            className="absolute left-0 top-1/2 z-10 flex h-16 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-r-lg border bg-white text-2xl shadow-sm hover:bg-gray-100 md:hidden"
+          >
+            ☰
+          </button>
+
+          {/* 채팅 상단 */}
           <ChatHeader />
 
-          {/* 
-            메시지가 없으면 추천 질문 화면 출력
-            메시지가 있으면 실제 채팅 출력
-          */}
+          {/* 채팅 메시지 or 추천 질문 */}
           {messages.length === 0 ? (
             <RecommendedQuestions onSelectQuestion={handleSendMessage} />
           ) : (
             <ChatMessages messages={messages} />
           )}
 
-          {/* 하단 입력창 */}
+          {/* 입력창 */}
           <ChatInput onSendMessage={handleSendMessage} />
         </section>
       </main>
