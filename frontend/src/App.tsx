@@ -16,7 +16,7 @@ function App() {
         <Route path="/account" element={<AccountPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/product" element={<ProductPage />} />
+        <Route path="/product/:productId" element={<ProductPage />} />
       </Routes>
     </BrowserRouter>
   );
