@@ -10,7 +10,7 @@ function ProductCard({ product }: ProductCardProps) {
 
     return (
         <article
-            onClick={() => navigate(`/product/${product.id}`)}
+            onClick={() => navigate(`/products/${product.productCode}/`)}
             className="cursor-pointer rounded-2xl border bg-white p-5 shadow-sm hover:shadow-md"
         >
             <div className="mb-4 flex h-40 items-center justify-center rounded-xl bg-gray-100 text-gray-400">

@@ -6,7 +6,7 @@ import SearchResultHeader from "../components/search/SearchResultHeader";
 import ProductGrid from "../components/search/ProductGrid";
 
 export type Product = {
-  id: number;
+  productCode: string;
   name: string;
   category: string;
   price: number;
@@ -19,21 +19,21 @@ function SearchPage() {
 
   const products: Product[] = [
     {
-      id: 1,
+      productCode: "TVT0001",
       name: "LG OLED evo TV",
       category: "TV",
       price: 2389000,
       imageUrl: "",
     },
     {
-      id: 2,
+      productCode: "REF0001",
       name: "LG 디오스 냉장고",
       category: "냉장고",
       price: 1890000,
       imageUrl: "",
     },
     {
-      id: 3,
+      productCode: "ACT0001",
       name: "LG 휘센 에어컨",
       category: "에어컨",
       price: 1590000,

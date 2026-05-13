@@ -16,7 +16,7 @@ function Header() {
         <div className="flex gap-2">
         <button
           type="button"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/accounts/")}
           className="rounded bg-gray-100 px-4 py-2 text-sm hover:bg-gray-200"
         >
           로그인
@@ -24,7 +24,7 @@ function Header() {
 
         <button
           type="button"
-          onClick={() => navigate("/account")}
+          onClick={() => navigate("/accounts/account/")}
           className="rounded bg-gray-100 px-4 py-2 text-sm hover:bg-gray-200"
         >
           마이페이지

@@ -18,7 +18,7 @@ function CategoryTabs({ selectedCategory }: CategoryTabsProps) {
                     <button
                         key={category}
                         type="button"
-                        onClick={() => navigate(`/search?category=${category}`)}
+                        onClick={() => navigate(`/products/?category=${category}`)}
                         className={
                             isSelected
                                 ? "rounded-xl border border-red-600 bg-red-50 p-4 font-bold text-red-600"

@@ -32,7 +32,7 @@ function MainPage() {
             </div>
 
             <button className="rounded-lg bg-red-600 px-6 py-3 text-white hover:bg-red-700"
-              onClick={() => navigate("/chat")}>
+              onClick={() => navigate("/chats/")}>
               LG봇 시작
             </button>
           </div>
@@ -47,7 +47,7 @@ function MainPage() {
               <CategoryCard
                 key={category}
                 name={category}
-                onClick={() => navigate(`/search?category=${category}`)}
+                onClick={() => navigate(`/products/?category=${category}`)}
               />
             ))}
           </div>

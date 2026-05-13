@@ -5,7 +5,7 @@ import ProductActions from "../components/product/ProductActions";
 import ProductTabs from "../components/product/ProductTabs";
 
 export type ProductDetail = {
-  id: number;
+  productCode: string;
   name: string;
   category: string;
   price: number;
@@ -15,11 +15,11 @@ export type ProductDetail = {
 
 function ProductPage() {
   const navigate = useNavigate();
-  const { productId } = useParams();
+  const { productCode } = useParams();
 
-  // 나중에 productId로 백엔드 상품 상세 API 호출
+  // 나중에 productCode로 백엔드 상품 상세 API 호출
   const product: ProductDetail = {
-    id: Number(productId),
+    productCode: productCode ?? "",
     name: "LG OLED evo TV",
     category: "TV",
     price: 2389000,
