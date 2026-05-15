@@ -1,0 +1,27 @@
+{% extends "base_page.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+{% include "components/header.html" %}
+
+<div class="min-h-screen bg-neutral-50 text-gray-900">
+    <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div class="mb-6">
+            <button type="button" id="product-back-button"
+                class="inline-flex items-center rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow">
+                ← 이전으로
+            </button>
+        </div>
+
+        {% include "components/product/product_summary.html" %}
+        {% include "components/product/product_actions.html" %}
+        {% include "components/product/product_tabs.html" %}
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/productpage.js' %}"></script>
+{% endblock %}
