@@ -141,3 +141,5 @@ AUTH_USER_MODEL = "accounts.Account"
 # 페이지 미디어 경로
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
