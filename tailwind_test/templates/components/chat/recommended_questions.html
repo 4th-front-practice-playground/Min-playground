@@ -1,0 +1,18 @@
+<div id="chat-recommended" class="flex flex-1 items-center justify-center p-6">
+    <div class="w-full max-w-2xl text-center">
+        <h2 class="mb-2 text-2xl font-bold text-gray-900">무엇을 도와드릴까요?</h2>
+
+        <p class="mb-6 text-gray-500">
+            원하는 가전 조건을 선택하거나 직접 입력해보세요.
+        </p>
+
+        <div class="grid gap-3 sm:grid-cols-2">
+            {% for question in recommended_questions %}
+            <button type="button" data-recommended-question="{{ question }}"
+                class="rounded-xl border bg-white p-4 text-left text-sm text-gray-900 hover:bg-gray-50">
+                {{ question }}
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+</div>

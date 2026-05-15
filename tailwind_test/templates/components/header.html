@@ -1,0 +1,15 @@
+<header class="flex h-14 items-center justify-between border-b px-6">
+    <a href="{% url 'mainpage:mainpage' %}" class="text-sm font-medium">
+        Home
+    </a>
+
+    <div class="flex gap-2">
+        <a href="{% url 'accounts:loginpage' %}" class="rounded bg-gray-100 px-4 py-2 text-sm hover:bg-gray-200">
+            로그인
+        </a>
+
+        <a href="{% url 'accounts:accountpage' %}" class="rounded bg-gray-100 px-4 py-2 text-sm hover:bg-gray-200">
+            마이페이지
+        </a>
+    </div>
+</header>

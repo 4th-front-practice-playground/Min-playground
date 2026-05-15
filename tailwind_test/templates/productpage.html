@@ -1,18 +1,27 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends "base_page.html" %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <title>Document</title>
-</head>
+{% block title %}{{ product.name }}{% endblock %}
 
-<body>
-    <p>상품 페이지</p>
-    <p>상품 종류: {{ product_type }}</p>
-    <p>상품 데이터: {{ product_data }}</p>
-    <a href="{% url 'mainpage:mainpage' %}">메인페이지로</a>
-</body>
+{% block content %}
+{% include "components/header.html" %}
 
-</html>
+<div class="min-h-screen bg-gray-50 text-gray-900">
+    <main class="mx-auto max-w-6xl px-6 py-8">
+        <div class="mb-4">
+            <button type="button" id="product-back-button"
+                class="rounded-lg border bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50">
+                ← 이전으로
+            </button>
+        </div>
+
+        {% include "components/product/product_summary.html" %}
+        {% include "components/product/product_actions.html" %}
+        {% include "components/product/product_tabs.html" %}
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/productpage.js' %}"></script>
+{% endblock %}

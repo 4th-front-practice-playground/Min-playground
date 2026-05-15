@@ -1,0 +1,19 @@
+<aside class="flex h-full flex-col rounded-2xl border bg-white p-5 shadow-sm">
+    <button type="button" data-chat-new
+        class="mb-6 w-full rounded-lg bg-red-600 py-3 font-semibold text-white hover:bg-red-700">
+        새 대화
+    </button>
+
+    <section>
+        <h2 class="mb-3 text-sm font-bold text-gray-500">최근 대화</h2>
+
+        <div class="space-y-2 overflow-y-auto">
+            {% for chat in recent_chats %}
+            <button type="button"
+                class="w-full rounded-lg border px-4 py-3 text-left text-sm text-gray-900 hover:bg-gray-50">
+                {{ chat }}
+            </button>
+            {% endfor %}
+        </div>
+    </section>
+</aside>
