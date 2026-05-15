@@ -1,0 +1,27 @@
+{% extends "base_page.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+{% include "components/header.html" %}
+
+<div class="min-h-screen bg-gray-50 text-gray-900">
+    <main class="mx-auto max-w-6xl px-6 py-8">
+        <div class="mb-4">
+            <button type="button" id="product-back-button"
+                class="rounded-lg border bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50">
+                ← 이전으로
+            </button>
+        </div>
+
+        {% include "components/product/product_summary.html" %}
+        {% include "components/product/product_actions.html" %}
+        {% include "components/product/product_tabs.html" %}
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/productpage.js' %}"></script>
+{% endblock %}

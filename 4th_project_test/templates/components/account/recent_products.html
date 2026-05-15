@@ -1,0 +1,12 @@
+<section class="rounded-2xl border bg-white p-6 shadow-sm">
+    <h2 class="mb-4 text-xl font-bold text-gray-900">최근 본 상품</h2>
+
+    <div class="space-y-3">
+        {% for product in recent_products %}
+        <div class="flex items-center justify-between rounded-xl border p-4">
+            <span class="font-medium text-gray-900">{{ product }}</span>
+            <button type="button" class="text-sm text-red-600">보기</button>
+        </div>
+        {% endfor %}
+    </div>
+</section>

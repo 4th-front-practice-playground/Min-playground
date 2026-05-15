@@ -1,0 +1,8 @@
+<section class="grid grid-cols-2 gap-3 md:grid-cols-5">
+    {% for category in categories %}
+    <a href="{% url 'products:searchpage' %}?category={{ category|urlencode }}"
+        class="rounded-xl border p-4 text-center font-medium {% if category == selected_category %}border-red-600 bg-red-50 font-bold text-red-600{% else %}bg-white text-gray-900 hover:bg-gray-50{% endif %}">
+        {{ category }}
+    </a>
+    {% endfor %}
+</section>
