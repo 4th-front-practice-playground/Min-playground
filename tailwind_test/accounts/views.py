@@ -18,8 +18,11 @@ def accountpage(request):
         "accountpage.html",
         {
             "username": request.user.username,
-            "nickname": request.user.nickname
-        }
+            "nickname": request.user.nickname,
+            "email": request.user.email,
+            "account_menus": ["찜한 상품", "최근 본 상품", "추천 기록", "계정 설정"],
+            "recent_products": ["LG OLED TV", "디오스 냉장고", "휘센 에어컨"],
+        },
     )
 
 def loginpage(request):
