@@ -6,13 +6,6 @@ def accountpage(request):
     if not request.user.is_authenticated:
         return redirect("accounts:loginpage")
 
-    if request.method == "POST":
-        if request.POST.get("action") == "logout":
-            logout(request)
-            return redirect("mainpage:mainpage")
-        else:
-            return redirect("accounts:accountpage")
-
     return render(
         request,
         "accountpage.html",
@@ -26,8 +19,9 @@ def accountpage(request):
     )
 
 def loginpage(request):
+    # 민혁 수정
     if request.user.is_authenticated:
-        return redirect("accounts:accountpage")
+        return redirect("mainpage:mainpage")
 
     if request.method == "POST":
         username = request.POST.get("username")
@@ -56,3 +50,10 @@ def loginpage(request):
             "login_fail": login_fail
         }
     )
+
+# 민혁 수정
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect("mainpage:mainpage")
+    return redirect("mainpage:mainpage")
