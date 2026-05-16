@@ -16,6 +16,27 @@
     const newChatButtons = document.querySelectorAll("[data-chat-new]");
     const recommendedButtons = document.querySelectorAll("[data-recommended-question]");
 
+    function hydrateServerMessages() {
+        if (!messagesList) {
+            return;
+        }
+
+        messagesList.querySelectorAll("[data-server-message]").forEach(function (el) {
+            const rawRole = el.getAttribute("data-role");
+            const role = rawRole === "user" ? "user" : "assistant";
+            const content = el.textContent.trim();
+            if (!content) {
+                return;
+            }
+            messages.push({
+                id: messageId,
+                role: role,
+                content: content,
+            });
+            messageId += 1;
+        });
+    }
+
     function renderMessages() {
         if (!messagesList) {
             return;
@@ -92,6 +113,9 @@
     function handleNewChat() {
         messages.length = 0;
         messageId = 0;
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, "", window.location.pathname);
+        }
         updateView();
         closeSidebar();
     }
@@ -145,5 +169,6 @@
         });
     }
 
+    hydrateServerMessages();
     updateView();
 })();
