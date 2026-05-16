@@ -1,17 +1,34 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from urllib.parse import urlencode
 
 # Create your views here.
 def chatpage(request):
+    if not request.user.is_authenticated:
+        return redirect("accounts:loginpage")
+
+    chatrooms = request.user.view_chatrooms()
+
+    if request.method == "POST":
+        target = request.POST.get("delete_id", None)
+        if target is not None:
+            target = int(target)
+            if target in [c.id for c in chatrooms]:
+                request.user.delete_chatroom(target)
+        
+        return redirect("chats:chatpage")
+
+    chats = []
+    if "chat_id" in request.GET.keys():
+        chat_id = int(request.GET.get("chat_id"))
+        for c in chatrooms:
+            if c.id == chat_id:
+                chats = c.view_chats()
+
     return render(
         request,
         "chatpage.html",
         {
-            "recent_chats": ["TV 추천 상담", "냉장고 비교", "에어컨 문의"],
-            "recommended_questions": [
-                "혼자 사는데 어떤 냉장고가 좋아?",
-                "20평대 에어컨 추천해줘",
-                "TV랑 사운드바 같이 추천해줘",
-                "예산 100만원 이하 세탁기 추천해줘",
-            ],
-        },
+            "chatrooms": chatrooms,
+            "chats": chats
+        }
     )
