@@ -66,8 +66,8 @@ def _convert_filter_value(field, lookup, value):
 
 
 def _split_condition_key(key, field_names):
-    for lookup in LOOKUPS:
-        suffix = f"_{lookup}"
+    for lookup in sorted(LOOKUPS, key=len, reverse=True):
+        suffix = f"__{lookup}"
         if key.endswith(suffix):
             field_name = key[:-len(suffix)]
             if field_name in field_names:
