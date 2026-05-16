@@ -1,27 +1,65 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from common.utils import get_product
+from .models import Account
 
 # Create your views here.
-def accountpage(request):
-    if not request.user.is_authenticated:
+def registerpage(request):
+    if request.user.is_authenticated:
+        return redirect("accounts:mypage")
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        nickname = request.POST.get("nickname")
+        pic = request.FILES.get("profile_picture", None)
+
+        Account.objects.create_user(
+            username=username,
+            password=password,
+            nickname=nickname,
+            profile_picture=pic
+        )
+
         return redirect("accounts:loginpage")
+
 
     return render(
         request,
-        "accountpage.html",
-        {
-            "username": request.user.username,
-            "nickname": request.user.nickname,
-            "email": request.user.email,
-            "account_menus": ["찜한 상품", "최근 본 상품", "추천 기록", "계정 설정"],
-            "recent_products": ["LG OLED TV", "디오스 냉장고", "휘센 에어컨"],
-        },
+        "registerpage.html"
     )
 
+
+def mypage(request):
+    if not request.user.is_authenticated:
+        return redirect("accounts:loginpage")
+
+    if request.method == "POST":
+        if request.POST.get("action") == "logout":
+            logout(request)
+            return redirect("mainpage:mainpage")
+        else:
+            return redirect("accounts:mypage")
+
+    favorites = [get_product(f.product_code)[1] for f in request.user.favorites.all()]
+
+    return render(
+        request,
+        "mypage.html",
+        {
+            "favorites": favorites
+        }
+    )
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+    return redirect("mainpage:mainpage")
+
+
 def loginpage(request):
-    # 민혁 수정
     if request.user.is_authenticated:
-        return redirect("mainpage:mainpage")
+        return redirect("accounts:mypage")
 
     if request.method == "POST":
         username = request.POST.get("username")
@@ -50,10 +88,3 @@ def loginpage(request):
             "login_fail": login_fail
         }
     )
-
-# 민혁 수정
-def logout_view(request):
-    if request.method == "POST":
-        logout(request)
-        return redirect("mainpage:mainpage")
-    return redirect("mainpage:mainpage")
