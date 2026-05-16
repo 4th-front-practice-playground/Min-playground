@@ -1,10 +1,20 @@
 from django.shortcuts import render
 
-# Create your views here.
+CATEGORIES = [
+    {"label": "TV", "product_type": "TVT"},
+    {"label": "세탁기", "product_type": "WMT"},
+    {"label": "냉장고", "product_type": "REF"},
+    {"label": "에어컨", "product_type": "ACT"},
+    {"label": "청소기", "product_type": "VAC"},
+]
+
+
 def mainpage(request):
-    categories = ["TV", "냉장고", "에어컨", "청소기", "세탁기"]
     return render(
         request,
         "mainpage.html",
-        {"categories": categories},
+        {
+            "test_var": request.user.nickname if request.user.is_authenticated else "비로그인 상태",
+            "categories": CATEGORIES,
+        },
     )
