@@ -1,4 +1,15 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
+
+LOOKUPS = ("gte", "lte", "in", "icontains", "exact")
+TEXT_FIELDS = (
+    models.CharField,
+    models.TextField,
+    models.URLField,
+    models.EmailField,
+    models.SlugField,
+)
 
 
 def model_to_tuple_str(instance):
@@ -6,11 +17,114 @@ def model_to_tuple_str(instance):
     return f"({', '.join(values)})"
 
 
+def _get_compare_field(field):
+    if isinstance(field, models.ForeignKey):
+        return field.target_field
+    return field
+
+
+def _is_text_field(field):
+    return isinstance(_get_compare_field(field), TEXT_FIELDS)
+
+
+def _convert_value(field, value):
+    compare_field = _get_compare_field(field)
+
+    if value is None:
+        return None
+
+    if isinstance(value, str):
+        value = value.strip()
+
+    if value == "":
+        return None
+
+    try:
+        return compare_field.to_python(value)
+    except (TypeError, ValueError, ValidationError):
+        return None
+
+
+def _convert_filter_value(field, lookup, value):
+    if lookup == "in":
+        if isinstance(value, str):
+            values = [item.strip() for item in value.split(",")]
+        else:
+            values = value
+
+        if not isinstance(values, (list, tuple, set)):
+            values = [values]
+
+        converted_values = [
+            converted
+            for item in values
+            if (converted := _convert_value(field, item)) is not None
+        ]
+        return converted_values or None
+
+    return _convert_value(field, value)
+
+
+def _split_condition_key(key, field_names):
+    for lookup in LOOKUPS:
+        suffix = f"_{lookup}"
+        if key.endswith(suffix):
+            field_name = key[:-len(suffix)]
+            if field_name in field_names:
+                return field_name, lookup
+            return None, None
+
+    if key in field_names:
+        return key, None
+
+    return None, None
+
+
+def search_model(model, range, conditions):
+    ignores = ["product_code"]
+    fields = {
+        field.name: field
+        for field in model._meta.fields
+        if field.name not in ignores
+    }
+    filters = {}
+
+    if range and "product_code" in {field.name for field in model._meta.fields}:
+        filters["product_code__in"] = range
+
+    for key, value in conditions.items():
+        if value is None or value == "":
+            continue
+
+        field_name, lookup = _split_condition_key(key, fields)
+        if not field_name:
+            continue
+
+        field = fields[field_name]
+        if lookup is None:
+            lookup = "icontains" if _is_text_field(field) else "exact"
+
+        if lookup == "icontains" and not _is_text_field(field):
+            lookup = "exact"
+
+        converted_value = _convert_filter_value(field, lookup, value)
+        if converted_value is None:
+            continue
+
+        filters[f"{field_name}__{lookup}"] = converted_value
+
+    return model.objects.filter(**filters)
+
+
 class ScreenResolution(models.Model):
     resol_code = models.CharField(max_length=50, primary_key=True)
     name = models.CharField(max_length=100, null=True, blank=True)
     width = models.IntegerField(null=True, blank=True)
     height = models.IntegerField(null=True, blank=True)
+
+    @classmethod
+    def search(cls, range:list=None, **conditions):
+        return search_model(cls, range, conditions)
 
     class Meta:
         db_table = 'ScreenResolution'
@@ -40,6 +154,10 @@ class ProductAC(models.Model):
     dehumid = models.IntegerField(null=True, blank=True)
     color = models.CharField(max_length=100, null=True, blank=True)
     manual_link = models.URLField(max_length=500, null=True, blank=True)
+
+    @classmethod
+    def search(cls, range:list=None, **conditions):
+        return search_model(cls, range, conditions)
 
     class Meta:
         db_table = 'ProductAC'
@@ -74,6 +192,10 @@ class ProductTV(models.Model):
     weight = models.FloatField(null=True, blank=True)
     manual_link = models.URLField(max_length=500, null=True, blank=True)
 
+    @classmethod
+    def search(cls, range:list=None, **conditions):
+        return search_model(cls, range, conditions)
+
     class Meta:
         db_table = 'ProductTV'
 
@@ -104,6 +226,10 @@ class ProductFridge(models.Model):
     ice_maker = models.IntegerField(null=True, blank=True)
     manual_link = models.URLField(max_length=500, null=True, blank=True)
 
+    @classmethod
+    def search(cls, range:list=None, **conditions):
+        return search_model(cls, range, conditions)
+
     class Meta:
         db_table = 'ProductFridge'
 
@@ -130,6 +256,10 @@ class ProductVAC(models.Model):
     suction_power = models.IntegerField(null=True, blank=True)
     battery_cnt = models.IntegerField(null=True, blank=True)
     manual_link = models.URLField(max_length=500, null=True, blank=True)
+
+    @classmethod
+    def search(cls, range:list=None, **conditions):
+        return search_model(cls, range, conditions)
 
     class Meta:
         db_table = 'ProductVAC'
@@ -158,6 +288,10 @@ class ProductWash(models.Model):
     water_temp = models.CharField(max_length=100, null=True, blank=True)
     spin_op = models.IntegerField(null=True, blank=True)
     manual_link = models.URLField(max_length=500, null=True, blank=True)
+
+    @classmethod
+    def search(cls, range:list=None, **conditions):
+        return search_model(cls, range, conditions)
 
     class Meta:
         db_table = 'ProductWash'
