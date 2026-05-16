@@ -43,7 +43,5 @@ def searchpage(request):
         "searchpage.html",
         {
             "page_obj": page_obj,
-            "start_index": page_obj.start_index(),
-            "end_index": page_obj.end_index()
         }
     )
