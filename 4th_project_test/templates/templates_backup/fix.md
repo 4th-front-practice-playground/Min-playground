@@ -30,4 +30,23 @@
 - **문제:** `floatformat:0`만 사용해 `16500000원`처럼 콤마 없이 표시됨.
 - **조치:** `config/settings.py`에 `django.contrib.humanize` 추가. 검색·상세·스펙 탭 템플릿에 `{% load humanize %}` 후 `{{ …|floatformat:0|intcomma }}원` 적용 (`product_card.html`, `product_summary.html`, `product_tabs.html`).
 
+## 검색 필터 UI
+- **문제:** `search_filter.html`이 체크박스·정렬 UI만 있고 `name`/`price__gte` 등 실제 쿼리와 연결되지 않음. 카테고리별 스펙 필드도 없음.
+- **조치:** `products/models.py`의 `search_model`·`LOOKUPS`(`gte`, `lte`, `icontains`, `exact` 등)에 맞춰 GET 폼 구성.
+  - `templates/components/search/search_filter.html` — `product_type`·`page=1` hidden, 필터 적용·초기화
+  - `templates/components/search/filters/common.html` — 상품명, 가격(최소/최대), 가격대 프리셋, 추천 난이도, 소비전력
+  - `filters/ref.html`, `tvt.html`, `act.html`, `vac.html`, `wmt.html` — 카테고리별 스펙 필드
+  - `filters/_field_text.html`, `_field_range.html` — 입력 partial
+  - `static/js/search_filter.js` — URL 쿼리로 입력값 복원, 가격 프리셋 연동, 빈 값·`price_preset`은 submit 시 제외
+  - `products/views.py` `searchpage`는 `product_type`·`page` 제외한 `request.GET`를 `search_product()`에 그대로 전달 (기존 로직 유지).
+
+## 필터 미적용 (전체 상품만 조회)
+- **문제:** 필터 적용 후에도 조건과 무관하게 전체 상품이 나옴. `price__gte`·`price__lte` 등 range 조건이 동작하지 않음.
+- **원인:** `products/models.py` `_split_condition_key`가 lookup 접미사를 `_{lookup}`(단일 `_`)로 파싱. `price__gte`가 필드명 `price_`로 잘못 분리되어 조건이 전부 무시됨.
+- **조치:** 접미사를 Django ORM과 동일하게 `__{lookup}`으로 수정. 긴 lookup(`icontains` 등) 우선 매칭(`sorted(..., reverse=True)`).
+
+## 검색 리다이렉트 시 필터 유실
+- **문제:** `product_type` 또는 `page`가 없을 때 `searchpage`가 `product_type`·`page`만 담긴 URL로 redirect → `price__gte`, `name` 등 필터 쿼리가 사라짐.
+- **조치:** `products/views.py`에서 `request.GET.copy()` 후 `product_type`·`page`만 보완해 `query.urlencode()`로 redirect (기존 필터 파라미터 유지).
+
 ---
