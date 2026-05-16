@@ -1,10 +1,10 @@
-<div class="flex items-center justify-between rounded-2xl border bg-white p-5 shadow-sm">
+<div class="flex flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-6">
     <div>
-        <h1 class="text-2xl font-bold text-gray-900">{{ selected_category }} 검색 결과</h1>
-        <p class="mt-1 text-sm text-gray-500">총 {{ product_count }}개의 상품</p>
+        <h1 class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">{% include "components/search/category_label_fragment.html" %} 검색 결과</h1>
+        <p class="mt-1 text-sm text-gray-500">총 {{ page_obj.paginator.count }}개의 상품</p>
     </div>
 
-    <select class="rounded-lg border px-3 py-2 text-sm text-gray-900">
+    <select class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 shadow-sm outline-none transition-colors focus:border-red-500 focus:ring-2 focus:ring-red-500/20 sm:w-auto">
         <option>추천순</option>
         <option>가격 낮은순</option>
         <option>가격 높은순</option>
