@@ -1,0 +1,13 @@
+<section class="space-y-4">
+    <h3 class="text-sm font-semibold text-gray-900">세탁기</h3>
+
+    {% include "components/search/filters/_field_text.html" with field="color" label="색상" %}
+    {% include "components/search/filters/_field_text.html" with field="door_design" label="도어 디자인" %}
+    {% include "components/search/filters/_field_text.html" with field="control_type" label="조작 방식" %}
+    {% include "components/search/filters/_field_text.html" with field="door_type" label="도어 타입" %}
+    {% include "components/search/filters/_field_text.html" with field="water_temp" label="물 온도" %}
+
+    {% include "components/search/filters/_field_range.html" with field="washing_cap" label="세탁 용량" unit="kg" %}
+    {% include "components/search/filters/_field_range.html" with field="drying_cap" label="건조 용량" unit="kg" %}
+    {% include "components/search/filters/_field_range.html" with field="spin_op" label="탈수 옵션" %}
+</section>

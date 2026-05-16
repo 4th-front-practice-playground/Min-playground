@@ -1,0 +1,13 @@
+<section class="space-y-4">
+    <h3 class="text-sm font-semibold text-gray-900">냉장고</h3>
+
+    {% include "components/search/filters/_field_text.html" with field="color" label="색상" %}
+    {% include "components/search/filters/_field_text.html" with field="install_type" label="설치 타입" %}
+    {% include "components/search/filters/_field_text.html" with field="cool_type" label="냉각 방식" %}
+    {% include "components/search/filters/_field_text.html" with field="door_type" label="도어 타입" %}
+
+    {% include "components/search/filters/_field_range.html" with field="door_cnt" label="도어 수" %}
+    {% include "components/search/filters/_field_range.html" with field="total_cap" label="총 용량" unit="L" %}
+    {% include "components/search/filters/_field_range.html" with field="refrige_cap" label="냉장 용량" unit="L" %}
+    {% include "components/search/filters/_field_range.html" with field="freeze_cap" label="냉동 용량" unit="L" %}
+</section>

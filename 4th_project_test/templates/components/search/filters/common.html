@@ -1,0 +1,32 @@
+<section class="space-y-4 border-b border-gray-100 pb-6">
+    <h3 class="text-sm font-semibold text-gray-900">공통</h3>
+
+    {% include "components/search/filters/_field_text.html" with field="name" label="상품명" placeholder="이름 일부 검색" %}
+
+    {% include "components/search/filters/_field_range.html" with field="price" label="가격" unit="원" %}
+
+    <div class="space-y-2" data-price-presets>
+        <p class="text-sm font-medium text-gray-800">가격대 빠른 선택</p>
+        <div class="space-y-2 text-sm text-gray-700">
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-gray-50">
+                <input type="radio" name="price_preset" value="" class="h-4 w-4 border-gray-300 text-red-600 focus:ring-red-500" data-price-preset />
+                직접 입력
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-gray-50">
+                <input type="radio" name="price_preset" value="under-100" class="h-4 w-4 border-gray-300 text-red-600 focus:ring-red-500" data-price-preset data-price-min="" data-price-max="1000000" />
+                100만원 이하
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-gray-50">
+                <input type="radio" name="price_preset" value="100-200" class="h-4 w-4 border-gray-300 text-red-600 focus:ring-red-500" data-price-preset data-price-min="1000000" data-price-max="2000000" />
+                100만원 ~ 200만원
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-gray-50">
+                <input type="radio" name="price_preset" value="over-200" class="h-4 w-4 border-gray-300 text-red-600 focus:ring-red-500" data-price-preset data-price-min="2000000" data-price-max="" />
+                200만원 이상
+            </label>
+        </div>
+    </div>
+
+    {% include "components/search/filters/_field_range.html" with field="proficiency_level" label="추천 난이도" unit="1~5" %}
+    {% include "components/search/filters/_field_range.html" with field="power_consum" label="소비전력" unit="W" %}
+</section>

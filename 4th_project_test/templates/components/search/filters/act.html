@@ -1,0 +1,11 @@
+<section class="space-y-4">
+    <h3 class="text-sm font-semibold text-gray-900">에어컨</h3>
+
+    {% include "components/search/filters/_field_text.html" with field="color" label="색상" %}
+
+    {% include "components/search/filters/_field_range.html" with field="cool_cap" label="냉방 능력" %}
+    {% include "components/search/filters/_field_range.html" with field="coverage" label="적용 면적" unit="㎡" %}
+    {% include "components/search/filters/_field_range.html" with field="wind_speed" label="풍속" %}
+    {% include "components/search/filters/_field_range.html" with field="dehumid" label="제습량" %}
+    {% include "components/search/filters/_field_range.html" with field="voltage" label="전압" unit="V" %}
+</section>

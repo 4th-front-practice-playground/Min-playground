@@ -1,0 +1,11 @@
+<section class="space-y-4">
+    <h3 class="text-sm font-semibold text-gray-900">TV</h3>
+
+    {% include "components/search/filters/_field_text.html" with field="resol_code" label="해상도 코드" placeholder="예: 4K_UHD" %}
+    {% include "components/search/filters/_field_text.html" with field="display_type" label="디스플레이" %}
+    {% include "components/search/filters/_field_text.html" with field="os_type" label="OS" %}
+
+    {% include "components/search/filters/_field_range.html" with field="screen_size" label="화면 크기" unit="인치" %}
+    {% include "components/search/filters/_field_range.html" with field="ref_rate" label="주사율" unit="Hz" %}
+    {% include "components/search/filters/_field_range.html" with field="speaker_output" label="스피커 출력" unit="W" %}
+</section>

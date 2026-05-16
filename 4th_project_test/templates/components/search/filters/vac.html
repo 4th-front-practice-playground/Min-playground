@@ -1,0 +1,9 @@
+<section class="space-y-4">
+    <h3 class="text-sm font-semibold text-gray-900">청소기</h3>
+
+    {% include "components/search/filters/_field_text.html" with field="color" label="색상" %}
+
+    {% include "components/search/filters/_field_range.html" with field="suction_power" label="흡입력" %}
+    {% include "components/search/filters/_field_range.html" with field="battery_cnt" label="배터리 수" %}
+    {% include "components/search/filters/_field_range.html" with field="unit_weight" label="본체 무게" unit="kg" %}
+</section>
